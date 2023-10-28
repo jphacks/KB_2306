@@ -1,4 +1,4 @@
-![4 コマ](https://github.com/jphacks/KB_2306/assets/147470382/21530b8b-7ab7-4997-97ee-6808edb648de)# サンプル（プロダクト名）
+# サンプル（プロダクト名）
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2023/07/JPHACKS2023_ogp.png)](https://www.youtube.com/watch?v=yYRQEdfGjEg)
 
