@@ -1,4 +1,5 @@
-final normalLyric = """[ti:If I Didn't Love You]
+const normalLyric = '''
+[ti:If I Didn't Love You]
 [ar:Jason Aldean/Carrie Underwood]
 [al:If I Didn't Love You]
 [by:]
@@ -86,15 +87,15 @@ final normalLyric = """[ti:If I Didn't Love You]
 [03:03.28]Oh if I didn't love you
 [03:06.56]If I didn't love you
 [03:09.07]If I didn't love you
-[03:11.67]If I didn't love you""";
+[03:11.67]If I didn't love you''';
 
-final issue1 = """
+const issue1 = '''
 L!011588917494188
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <QrcInfos>
-<QrcHeadInfo SaveTime="221" Version="100"/>
-<LyricInfo LyricCount="1">
-<Lyric_1 LyricType="1" LyricContent="[ti:beolsseo 12si]
+<QrcHeadInfo SaveTime='221' Version='100'/>
+<LyricInfo LyricCount='1'>
+<Lyric_1 LyricType='1' LyricContent='[ti:beolsseo 12si]
 [ar:cheongha]
 [al:beolsseo 12si]
 [by:]
@@ -111,12 +112,13 @@ L!011588917494188
 [7443,827]Mixing (7443,31)Engineer：(7474,31)go(7505,31)hyeon(7536,31)jeong(7567,31) ((7598,31)Assist. (7629,31)gim(7660,31)gyeong(7691,31)hwan(7722,31), (7753,31)gim(7784,31)jun(7815,31)sang(7846,31), (7877,31)jeon(7908,31)jin(7939,31), (7970,31)jeong(8001,31)gi(8032,31)un(8063,31)) (8094,31)at (8125,31)Koko (8156,31)Sound (8187,31)Studio(8218,31)
 
 [99999999,9999999]***Lyrics are from third-parties***(99999999,2000)
-"/>
+'/>
 </LyricInfo>
 </QrcInfos>
-""";
+''';
 
-final advancedLyric = """[ti:If I Didn't Love You]
+const advancedLyric = '''
+[ti:If I Didn't Love You]
 [ar:Jason Aldean/Carrie Underwood]
 [al:If I Didn't Love You]
 [by:]
@@ -183,9 +185,10 @@ final advancedLyric = """[ti:If I Didn't Love You]
 [183289,3080]Oh (183289,363)if (183652,308)I (183960,320)didn't (184280,689)love (184969,671)you(185640,729)
 [186560,2328]If (186560,216)I (186776,233)didn't (187009,610)love (187619,654)you(188273,615)
 [189072,2360]If (189072,202)I (189274,247)didn't (189521,680)love (190201,655)you(190856,576)
-[191672,3477]If (191672,210)I (191882,262)didn't (192144,682)love (192826,663)you(193489,1660)""";
+[191672,3477]If (191672,210)I (191882,262)didn't (192144,682)love (192826,663)you(193489,1660)''';
 
-final transLyric = """[ti:If I Didn't Love You]
+const transLyric = '''
+[ti:If I Didn't Love You]
 [ar:Jason Aldean/Carrie Underwood]
 [al:If I Didn't Love You]
 [by:]
@@ -273,4 +276,4 @@ final transLyric = """[ti:If I Didn't Love You]
 [03:03.28]如果我从未爱上你
 [03:06.56]如果我从未爱上你
 [03:09.07]如果我从未爱上你
-[03:11.67]如果我从未爱上你""";
+[03:11.67]如果我从未爱上你''';
