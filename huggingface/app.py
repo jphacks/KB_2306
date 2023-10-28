@@ -47,9 +47,9 @@ iface = gr.Interface(
     fn=lambda whisper_model_name, audiofile: execute(whisper_model_name, audiofile),
     inputs=[model, audiofile],
     outputs=[
-        gr.outputs.Audio(label="Accompaniment"),
-        gr.outputs.Audio(label="Vocals"),
-        gr.outputs.JSON(label="Transcription")
+        Audio(label="Accompaniment"),
+        Audio(label="Vocals"),
+        JSON(label="Transcription")
     ]
 )
 
