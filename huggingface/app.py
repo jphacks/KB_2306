@@ -20,17 +20,15 @@ def execute(whisper_model_name, audiofile):
     # (2, T) numpy arrays
     Y, V = separator.separate(X)
 
-
     # Create a whisper instance
     whisper_model = stable_whisper.load_model(whisper_model_name)
 
     # Transcribe the vocals with Whisper
     segments = transcribe(whisper_model, V.T, sample_rate)
 
-    # Return the file paths for download
     return segments
 
-# Create a dropdown to sSelect the model
+# Create a dropdown to select the model
 model_options = ["base", "small", "medium", "large", "large-v2"]
 model = Dropdown(choices=model_options, label="Select a model")
 
@@ -41,9 +39,7 @@ audiofile = Audio(type='filepath', label="Upload an audio file")
 iface = gr.Interface(
     fn=lambda whisper_model_name, audiofile: execute(whisper_model_name, audiofile),
     inputs=[model, audiofile],
-    outputs=[
-        JSON(label="Transcription")
-    ]
+    outputs=[JSON(label="Transcription")]
 )
 
 # Launch the interface
