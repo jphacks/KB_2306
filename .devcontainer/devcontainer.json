@@ -1,0 +1,42 @@
+{
+  "name": "flutter_firebase",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "bash ./.devcontainer/post-create.sh",
+  "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind,consistency=cached",
+  "mounts": [
+    // See: https://code.visualstudio.com/remote/advancedcontainers/improve-performance#_use-a-targeted-named-volume
+    "source=${localWorkspaceFolderBasename}-functions-node_modules,target=${containerWorkspaceFolder}/firebase/functions/node_modules,type=volume",
+    "source=${localWorkspaceFolderBasename}-global-node_modules,target=/usr/local/share/npm-global/lib/node_modules,type=volume"
+  ],
+  "forwardPorts": [3000],
+  "remoteUser": "vscode",
+  "features": {
+    "ghcr.io/dhoeric/features/google-cloud-cli:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true,
+          "source.organizeImports": true
+        }
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "christian-kohler.npm-intellisense",
+        "unional.vscode-sort-package-json",
+        "esbenp.prettier-vscode",
+        "dart-code.flutter",
+        "dart-code.dart-code",
+        "redhat.vscode-yaml",
+        "kaiqun.build-runner"
+      ]
+    }
+  }
+}

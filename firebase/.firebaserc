@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "prod": "lyrics-transcriber",
+    "dev": "lyrics-transcriber-dev"
+  }
+}
