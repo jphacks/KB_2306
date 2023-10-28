@@ -18,8 +18,8 @@
       "configureZshAsDefaultShell": true
     },
     "ghcr.io/devcontainers/features/python:1": {
-			"version": "3.8.18"
-		}
+      "version": "3.8.18"
+    }
   },
   "customizations": {
     "vscode": {
@@ -40,7 +40,7 @@
         "redhat.vscode-yaml",
         "kaiqun.build-runner",
         "ms-python.python",
-				"ms-python.autopep8"
+        "ms-python.autopep8"
       ]
     }
   }
