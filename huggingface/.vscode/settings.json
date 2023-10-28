@@ -1,0 +1,11 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports.python": true
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+        "editor.defaultFormatter": "ms-python.autopep8"
+    }
+}

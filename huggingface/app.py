@@ -39,7 +39,7 @@ audiofile = Audio(type='filepath', label="Upload an audio file")
 iface = gr.Interface(
     fn=lambda whisper_model_name, audiofile: execute(whisper_model_name, audiofile),
     inputs=[model, audiofile],
-    outputs=gr.outputs.JSON()
+    outputs=[JSON(label="Transcription")]
 )
 
 # Launch the interface
