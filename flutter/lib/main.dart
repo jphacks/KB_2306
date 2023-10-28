@@ -216,7 +216,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             ElevatedButton(
               onPressed: () async {
                 if (audioPlayer == null || !playing) {
-                  audioPlayer = AudioPlayer()..play(AssetSource('music1.mp3'));
+                  audioPlayer = AudioPlayer();
+                  await audioPlayer!.play(AssetSource('music1.mp3'));
                   setState(() {
                     playing = true;
                   });
