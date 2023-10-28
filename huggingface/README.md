@@ -18,5 +18,5 @@ license: mit
 以上を行った後でプロジェクトルートで次を実行します.
 
 ```
-git subtree push --prefix=huggingface_main https://huggingface.co/spaces/sanbasan/lyrics-transcription-api-private main
+git subtree push --prefix=huggingface https://huggingface.co/spaces/sanbasan/lyrics-transcription-api-private main
 ```
