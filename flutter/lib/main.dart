@@ -1,33 +1,48 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase/const.dart';
+import 'package:flutter_firebase/firebase_options.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:flutter_lyric/lyrics_reader_model.dart';
 
-// ignore: always_use_package_imports
-import 'const.dart';
+Future<void> main() async {
+  await runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-// main関数: アプリのエントリーポイントです。アプリの起動時に最初に実行される関数です。
-void main() {
-  runApp(MaterialApp(theme: ThemeData.dark(), home: const MyApp()));
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      await FirebaseAuth.instance.signInAnonymously();
+
+      runApp(MaterialApp(theme: ThemeData.dark(), home: const MyApp()));
+    },
+    (error, stackTrace) {
+      print('runZonedGuarded: Caught error in my root zone.');
+      print('error\n$error');
+      print('stacktrace\n$stackTrace');
+    },
+  );
 }
 
-// MyAppクラス: Flutterアプリケーションのルートウィジェットです。
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+class MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   AudioPlayer? audioPlayer;
   double sliderProgress = 111658;
   int playProgress = 111658;
   double max_value = 211658;
   bool isTap = false;
-
-  bool useEnhancedLrc = true;
 
   LyricsReaderModel lyricModel = LyricsModelBuilder.create()
       .bindLyricToMain(advancedLyric)
@@ -41,15 +56,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
-  // Scaffoldウィジェット: 基本的なアプリの構造を提供するウィジェットです。
   @override
   Widget build(BuildContext context) {
-    // 画面の幅を取得
     final width = MediaQuery.of(context).size.width;
 
-    // 画面の幅に応じて文字サイズを計算
     final mainTextSize = (width ~/ 100) * 2.5;
-    // 計算されたmainTextSizeをlyricUI.defaultSizeに設定
     lyricUI.defaultSize = mainTextSize;
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +70,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     );
   }
 
-  //曲名のリスト
   List<Widget> buildSongList() => [
         const ListTile(title: Text('Song 1: Sample Title')),
         const ListTile(title: Text('Song 2: Another Title')),
@@ -68,10 +78,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         const ListTile(title: Text('Song 5: Final Song')),
       ];
 
-  //全体の見た目をつかさどる
   Widget buildContainer() => Row(
         children: [
-          //左側曲リスト
           Container(
             color: Colors.grey,
             width: 250, // Width for song list
@@ -79,14 +87,11 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               children: buildSongList(),
             ),
           ),
-          //右側　歌詞表示　再生操作類
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //歌詞表示
                 buildReaderWidget(),
-                //再生操作類の作成
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -103,10 +108,9 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
       );
 
   double lyricPadding = 40;
-  //歌詞表示部分
   Stack buildReaderWidget() => Stack(
         children: [
-          ...buildReaderBackground(), //背景の設定
+          ...buildReaderBackground(),
           LyricsReader(
             padding: EdgeInsets.symmetric(horizontal: lyricPadding),
             model: lyricModel,
@@ -153,7 +157,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         ],
       );
 
-  //再生コントロール　部分
   List<Widget> buildPlayControl() => [
         Container(
           height: 15,
@@ -292,24 +295,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           ),
         ),
       ];
-
-  double lineGap = 16;
-  double inlineGap = 10;
-  LyricAlign lyricAlign = LyricAlign.CENTER;
-  HighlightDirection highlightDirection = HighlightDirection.LTR;
-
-  void refreshLyric() {
-    lyricUI = UINetease.clone(lyricUI);
-  }
-
-  double bias = 0.5;
-  LyricBaseLine lyricBiasBaseLine = LyricBaseLine.CENTER;
-
-  Text buildTitle(String title) => Text(
-        title,
-        style:
-            const TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
-      );
 }
 
 // Helper function to format milliseconds into mm:ss format
