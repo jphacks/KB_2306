@@ -16,7 +16,10 @@
     "ghcr.io/dhoeric/features/google-cloud-cli:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {
       "configureZshAsDefaultShell": true
-    }
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+			"version": "3.8.18"
+		}
   },
   "customizations": {
     "vscode": {
@@ -35,7 +38,9 @@
         "dart-code.flutter",
         "dart-code.dart-code",
         "redhat.vscode-yaml",
-        "kaiqun.build-runner"
+        "kaiqun.build-runner",
+        "ms-python.python",
+				"ms-python.autopep8"
       ]
     }
   }

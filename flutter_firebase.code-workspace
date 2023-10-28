@@ -11,6 +11,10 @@
     {
       "name": "Flutter",
       "path": "./flutter"
+    },
+    {
+      "name": "Hugging Face",
+      "path": "./huggingface"
     }
   ],
   "settings": {
