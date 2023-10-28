@@ -3,8 +3,21 @@
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2023/07/JPHACKS2023_ogp.png)](https://www.youtube.com/watch?v=yYRQEdfGjEg)
 
 ## 製品概要
+音楽ファイルをダウンロードし、WhisperAIを使って歌詞を自動生成する。
+音楽を流しながら、該当箇所の歌詞を表示することが可能。
+
 ### 背景(製品開発のきっかけ、課題等）
+![DALL·E 2023-10-28 16 16 18 - Cartoon of a 4-panel comic  Panel 1_ A young boy named Ishikawa, with headphones on, excitedly discovers an indie artist's song  Panel 2_ He tries to ](https://github.com/jphacks/KB_2306/assets/147470382/f78fe3c5-fb85-418d-a433-453060cd3bb8)
+
+ある日、石川少年はインディーズアーティストの楽曲にハマりました。
+携帯の音楽アプリで音楽を聴こうとすると、、、
+音楽が早すぎて何を言っているのかわかりませんでした！調べても歌詞を出てこなかったので、、、
+「そうだ！歌詞を自動生成してくれるアプリを作ろう！！」と思いました。
+
 ### 製品説明（具体的な製品の説明）
+音声ファイルをダウンロードし、文字起こしAI「Whisper」を活用して歌詞を自動生成します。
+その結果、公表されていない歌詞でさえも、ユーザーは音楽とともに歌詞を楽しむことができます。
+
 ### 特長
 #### 1. 特長1
 #### 2. 特長2
