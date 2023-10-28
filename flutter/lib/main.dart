@@ -24,9 +24,10 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   double max_value = 211658;
   bool isTap = false;
 
-  bool useEnhancedLrc = false;
+  bool useEnhancedLrc = true;
+
   var lyricModel = LyricsModelBuilder.create()
-      .bindLyricToMain(normalLyric)
+      .bindLyricToMain(advancedLyric)
       .bindLyricToExt(transLyric)
       .getModel();
 
@@ -40,6 +41,15 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 // Scaffoldウィジェット: 基本的なアプリの構造を提供するウィジェットです。
   @override
   Widget build(BuildContext context) {
+    // 画面の幅を取得
+    double width = MediaQuery.of(context).size.width;
+
+    // 画面の幅に応じて文字サイズを計算
+    var mainTextSize = (width ~/100) * 2.5;
+    var extTextSize = mainTextSize * 0.8;
+    // 計算されたmainTextSizeをlyricUI.defaultSizeに設定
+    lyricUI.defaultSize = mainTextSize;
+    extTextSize = extTextSize;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plugin example app'),
@@ -58,7 +68,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             child: Column(
               children: [
                 ...buildPlayControl(),
-                ...buildUIControl(),
               ],
             ),
           ),
@@ -251,243 +260,13 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     ];
   }
 
-  var mainTextSize = 18.0;
+
   var extTextSize = 16.0;
   var lineGap = 16.0;
   var inlineGap = 10.0;
   var lyricAlign = LyricAlign.CENTER;
   var highlightDirection = HighlightDirection.LTR;
 
-  List<Widget> buildUIControl() {
-    return [
-      Container(
-        height: 30,
-      ),
-      Text("UI setting", style: TextStyle(fontWeight: FontWeight.bold)),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Checkbox(
-              value: lyricUI.enableHighlight(),
-              onChanged: (value) {
-                setState(() {
-                  lyricUI.highlight = (value ?? false);
-                  refreshLyric();
-                });
-              }),
-          Text("enable highLight"),
-          Checkbox(
-              value: useEnhancedLrc,
-              onChanged: (value) {
-                setState(() {
-                  useEnhancedLrc = value!;
-                  lyricModel = LyricsModelBuilder.create()
-                      .bindLyricToMain(value ? advancedLyric : normalLyric)
-                      .bindLyricToExt(transLyric)
-                      .getModel();
-                });
-              }),
-          Text("use Enhanced lrc")
-        ],
-      ),
-      buildTitle("highlight direction"),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: HighlightDirection.values
-            .map(
-              (e) => Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Radio<HighlightDirection>(
-                        activeColor: Colors.orangeAccent,
-                        value: e,
-                        groupValue: highlightDirection,
-                        onChanged: (v) {
-                          setState(() {
-                            highlightDirection = v!;
-                            lyricUI.highlightDirection = highlightDirection;
-                            refreshLyric();
-                          });
-                        }),
-                    Text(e.toString().split(".")[1])
-                  ],
-                ),
-              )),
-            )
-            .toList(),
-      ),
-      buildTitle("lyric padding"),
-      Slider(
-        min: 0,
-        max: 100,
-        label: lyricPadding.toString(),
-        value: lyricPadding,
-        activeColor: Colors.blueGrey,
-        inactiveColor: Colors.blue,
-        onChanged: (double value) {
-          setState(() {
-            lyricPadding = value;
-          });
-        },
-      ),
-      buildTitle("lyric primary text size"),
-      Slider(
-        min: 15,
-        max: 30,
-        label: mainTextSize.toString(),
-        value: mainTextSize,
-        activeColor: Colors.blueGrey,
-        inactiveColor: Colors.blue,
-        onChanged: (double value) {
-          setState(() {
-            mainTextSize = value;
-          });
-        },
-        onChangeEnd: (double value) {
-          setState(() {
-            lyricUI.defaultSize = mainTextSize;
-            refreshLyric();
-          });
-        },
-      ),
-      buildTitle("lyric secondary text size"),
-      Slider(
-        min: 15,
-        max: 30,
-        label: extTextSize.toString(),
-        value: extTextSize,
-        activeColor: Colors.blueGrey,
-        inactiveColor: Colors.blue,
-        onChanged: (double value) {
-          setState(() {
-            extTextSize = value;
-          });
-        },
-        onChangeEnd: (double value) {
-          setState(() {
-            lyricUI.defaultExtSize = extTextSize;
-            refreshLyric();
-          });
-        },
-      ),
-      buildTitle("lyric line spacing"),
-      Slider(
-        min: 10,
-        max: 80,
-        label: lineGap.toString(),
-        value: lineGap,
-        activeColor: Colors.blueGrey,
-        inactiveColor: Colors.blue,
-        onChanged: (double value) {
-          setState(() {
-            lineGap = value;
-          });
-        },
-        onChangeEnd: (double value) {
-          setState(() {
-            lyricUI.lineGap = lineGap;
-            refreshLyric();
-          });
-        },
-      ),
-      buildTitle("primary and secondary lyric spacing"),
-      Slider(
-        min: 10,
-        max: 80,
-        label: inlineGap.toString(),
-        value: inlineGap,
-        activeColor: Colors.blueGrey,
-        inactiveColor: Colors.blue,
-        onChanged: (double value) {
-          setState(() {
-            inlineGap = value;
-          });
-        },
-        onChangeEnd: (double value) {
-          setState(() {
-            lyricUI.inlineGap = inlineGap;
-            refreshLyric();
-          });
-        },
-      ),
-      buildTitle("select line bias"),
-      Slider(
-        min: 0.3,
-        max: 0.8,
-        label: bias.toString(),
-        value: bias,
-        activeColor: Colors.blueGrey,
-        inactiveColor: Colors.blue,
-        onChanged: (double value) {
-          setState(() {
-            bias = value;
-          });
-        },
-        onChangeEnd: (double value) {
-          setState(() {
-            lyricUI.bias = bias;
-            refreshLyric();
-          });
-        },
-      ),
-      buildTitle("lyric align"),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: LyricAlign.values
-            .map(
-              (e) => Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Radio<LyricAlign>(
-                        activeColor: Colors.orangeAccent,
-                        value: e,
-                        groupValue: lyricAlign,
-                        onChanged: (v) {
-                          setState(() {
-                            lyricAlign = v!;
-                            lyricUI.lyricAlign = lyricAlign;
-                            refreshLyric();
-                          });
-                        }),
-                    Text(e.toString().split(".")[1])
-                  ],
-                ),
-              )),
-            )
-            .toList(),
-      ),
-      buildTitle("select line base"),
-      Row(
-        children: LyricBaseLine.values
-            .map((e) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Radio<LyricBaseLine>(
-                            activeColor: Colors.orangeAccent,
-                            value: e,
-                            groupValue: lyricBiasBaseLine,
-                            onChanged: (v) {
-                              setState(() {
-                                lyricBiasBaseLine = v!;
-                                lyricUI.lyricBaseLine = lyricBiasBaseLine;
-                                refreshLyric();
-                              });
-                            }),
-                        Text(e.toString().split(".")[1])
-                      ],
-                    ),
-                  ),
-                ))
-            .toList(),
-      ),
-    ];
-  }
 
   void refreshLyric() {
     lyricUI = UINetease.clone(lyricUI);
