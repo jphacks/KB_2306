@@ -1,10 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
+//import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:flutter_lyric/lyrics_reader_model.dart';
 
 // ignore: always_use_package_imports
-import 'const.dart';
+import 'const copy.dart';
 
 // main関数: アプリのエントリーポイントです。アプリの起動時に最初に実行される関数です。
 void main() {
@@ -22,15 +23,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   AudioPlayer? audioPlayer;
-  double sliderProgress = 111658;
-  int playProgress = 111658;
-  double max_value = 211658;
+  double sliderProgress = 0;
+  int playProgress = 0;
+  double max_value = 60000;
   bool isTap = false;
 
   bool useEnhancedLrc = true;
 
   LyricsReaderModel lyricModel = LyricsModelBuilder.create()
-      .bindLyricToMain(advancedLyric)
+      .bindLyricToMain(normalLyric)
       .bindLyricToExt(transLyric)
       .getModel();
 
@@ -73,7 +74,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         children: [
           //左側曲リスト
           Container(
-            color: Colors.grey,
+            color: Colors.grey[850],
             width: 250, // Width for song list
             child: ListView(
               children: buildSongList(),
