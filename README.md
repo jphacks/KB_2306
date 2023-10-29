@@ -3,6 +3,9 @@
 <img src="https://github.com/jphacks/KB_2306/assets/147470382/1e7d8f9a-9485-43be-9f01-a6de53ec822a" width="500px">
 
 ## 製品概要
+
+https://github.com/jphacks/KB_2306/assets/53816975/e0c310ff-33fb-4ac9-8b6c-cfcec829b959
+
 ### Lyrics × Tech
 音楽ファイルをダウンロードし、文字起こしAI「Whisper」を使って歌詞を自動生成します。  
 使い方は簡単！！　どんな音楽も歌詞を見ながら楽しめる  
@@ -54,18 +57,50 @@
 ## 開発技術
 ### 活用した技術
 #### API・データ
-* 
-* 
+
+* 文字起こし実行
+  * [Hugging Face Inference Endpoints](https://huggingface.co/inference-endpoints)
+    * [Moseca](https://github.com/fabiogra/moseca) でボーカルとそれ以外の音源分離
+    * [Whisper](https://github.com/openai/whisper) でボーカルを文字起こし
+* クライアント
+  * Flutter Web
+    * [Hive](https://pub.dev/packages/hive) で歌詞と音楽データを管理
+  * Firebase Hosting にデプロイ
+* Firebase
+    * Web アプリと Hugging Face の処理の中継を Firebase Cloud Functions で行う
 
 #### フレームワーク・ライブラリ・モジュール
-* 
-* 
-
-#### デバイス
-* 
-* 
+* Hugging Face
+    * Python
+    * PyTorch
+* Web アプリ
+  * Dart
+  * Flutter
+* サーバ
+  * Firebase
+    * Firebase Cloud Functions
+      * Typescript
+    * Firebase Authentication
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
-* 独自で開発したものの内容をこちらに記載してください
-* 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
+
+* Web クライアントアプリ全般
+  * [`flutter/`](https://github.com/jphacks/KB_2306/tree/master/flutter)
+* Moseca の音源分離モデルを動作させるための音声データの処理
+  * [`huggingface/src/services/vocal_remover`](https://github.com/jphacks/KB_2306/tree/master/huggingface/src/services/vocal_remover)
+* 音源分離モデルと文字起こしモデルの統合
+  * [`huggingface/app.py`](https://github.com/jphacks/KB_2306/blob/master/huggingface/app.py)
+* Web アプリと Hugging Face の中継
+  * [`firebase/functions/`](https://github.com/jphacks/KB_2306/tree/master/firebase/functions)
+
+#### 特に力を入れた項目
+
+* モデルの実行系を自作
+  * OpenAI の API などを利用せずに Hugging Face で実行
+    * [`huggingface/src/services/`](https://github.com/jphacks/KB_2306/tree/master/huggingface/src/services/)
+    * OpenAI の API では何秒のところで何と言っているかが取得できないため自作
+* データ管理
+  * IndexedDB ベースでブラウザにデータを保存
+    * [`flutter/lib/helpers/hive.dart`](https://github.com/jphacks/KB_2306/tree/master/flutter/lib/helpers/hive.dart)
+      * 曲と歌詞のデータを保存する
