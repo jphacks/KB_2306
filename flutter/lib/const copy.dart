@@ -1,33 +1,46 @@
+// ignore: file_names
 const normalLyric = '''
 [ti:lose yourself]
 [ar:eminem]
 [al:Lose yourself]
 [by:]
 [offset:0]
-[00:00.45]lose yourself - eminem
-[00:02.49]
-[00:00.00]
-[00:33.93]Look,
-[00:34.68]
-[00:36.49]if you had
-[00:37.74]
-[00:39.28]one shot,
-[00:39.82]
-[00:41.38]one opportunity
-[00:42.24]
-[00:43.31]to seize everything you ever wanted
-[00:45.44]
-[00:46.01]in one
-[00:47.50]moment to capture it,
-[00:49.84]
-[00:51.30]just let it slip.
-[00:52.00]
-[00:52.54]Yo,
-[00:52.84]
-[00:53.70]his palms are sweaty,
-[00:55.04]knees weak, arms are heavy, there's vomit on his sweater already,
-[00:58.24]
-[00:58.76]mom's spaghetti, he's nervous.
+[00:00.45]good-love
+[00:04.60]And
+[00:06.60]
+[00:07.34]release the treble Turn the music up and
+[00:12.80]
+[00:13.32]rise the level Let the love that you give to me I thought about it constantly
+[00:20.62]Get a kiss just for free Baby boy,
+[00:24.38]what you've done to me
+[00:26.32]You're a liar,
+[00:27.32]
+[00:29.34]liar Put me on fire,
+[00:32.72]
+[00:34.66]fire
+[00:35.26]
+[00:36.34]Take me,
+[00:37.70]yeah Oh baby
+[00:40.44]
+[00:45.66]My head,
+[00:46.90]
+[00:48.40]ooh
+[00:49.14]
+[00:52.86]This ain't got me feeling okay
+[00:56.70]
+[00:58.84]Come on and rock with me, little shorty
+[01:02.78]
+[01:04.02]Face the wall
+[01:05.16]
+[01:06.08]And release the treble
+[01:08.52]Turn the music up and
+[01:11.42]
+[01:12.02]rise the level Let the,
+[01:14.98]hey, yeah
+[01:16.64]
+[01:20.36]Oh,
+[01:20.96]
+[01:22.38]yeah
 ''';
 
 const issue1 = '''
@@ -75,7 +88,7 @@ const advancedLyric = '''
 [52540,300] (52540,11)Yo,
 [53700,1100] (53700,30819)his (84519,36044)palmsaresweaty,
 [55040,3200] (55040,5336)knees (60376,5812)weak, (66188,4676)arms (70864,456)are (71320,42374)heavy, (113694,702)there's (114396,1217)vomitonhissweateralready,
-[58760,1120](58760,311)mom's (59071,11)spaghetti, (59082,311)he's (59393,13)nervous.''';
+[58760,1120](58760,311)mom's(59071,11)spaghetti,(59082,311)he's (59393,13)nervous.''';
 
 const transLyric = '''
 ''';

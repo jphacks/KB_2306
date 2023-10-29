@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-//import 'package:file_picker/file_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:flutter_lyric/lyrics_reader_model.dart';
@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
     lyricUI.defaultSize = mainTextSize;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plugin example app'),
+        title: const Text('lyricScribe'),
       ),
       body: buildContainer(),
     );
@@ -67,6 +67,19 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         const ListTile(title: Text('Song 3: More Music')),
         const ListTile(title: Text('Song 4: Melody Tune')),
         const ListTile(title: Text('Song 5: Final Song')),
+        const ListTile(title: Text('good-love')),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor:
+                  const Color.fromARGB(255, 84, 13, 117), // button's text color
+            ),
+            onPressed: () async => pickFile(context),
+            child: const Text('曲を追加'),
+          ),
+        ),
       ];
 
   //全体の見た目をつかさどる
@@ -74,7 +87,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
         children: [
           //左側曲リスト
           Container(
-            color: Colors.grey[850],
+            color: Colors.black,
             width: 250, // Width for song list
             child: ListView(
               children: buildSongList(),
@@ -92,6 +105,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        const ListTile(title: Text('good-love')),
                         ...buildPlayControl(),
                       ],
                     ),
@@ -108,6 +122,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   Stack buildReaderWidget() => Stack(
         children: [
           ...buildReaderBackground(), //背景の設定
+
           LyricsReader(
             padding: EdgeInsets.symmetric(horizontal: lyricPadding),
             model: lyricModel,
@@ -120,9 +135,13 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
             ),
             emptyBuilder: () => SizedBox(
               height: MediaQuery.of(context).size.height * 0.75,
+              width: double.infinity,
               child: Text(
-                'No lyrics',
-                style: lyricUI.getOtherMainTextStyle(),
+                'No lyrics Now\n Please select or add music',
+                textAlign: TextAlign.center, // テキストの配置を中央に設定
+                style: lyricUI.getOtherMainTextStyle().copyWith(
+                      fontSize: 24,
+                    ),
               ),
             ),
             selectLineBuilder: (progress, confirm) => Row(
@@ -156,9 +175,6 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
 
   //再生コントロール　部分
   List<Widget> buildPlayControl() => [
-        Container(
-          height: 15,
-        ),
         //進行バーを最大値ではないとき表示
         if (sliderProgress < max_value)
           Row(
@@ -170,8 +186,8 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                   max: max_value,
                   label: sliderProgress.toString(),
                   value: sliderProgress,
-                  activeColor: Colors.blueGrey,
-                  inactiveColor: Colors.blue,
+                  activeColor: const Color.fromARGB(255, 220, 227, 230),
+                  inactiveColor: const Color.fromARGB(255, 30, 33, 35),
                   onChanged: (value) {
                     setState(() {
                       sliderProgress = value;
@@ -287,7 +303,10 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.blue, Colors.purple], //青から紫へのグラデーション変更必須
+                colors: [
+                  Color.fromARGB(255, 84, 13, 117),
+                  Color.fromARGB(255, 218, 134, 200),
+                ],
               ),
             ),
           ),
@@ -318,4 +337,13 @@ String _formatDuration(Duration duration) {
   final minutes = duration.inMinutes;
   final seconds = duration.inSeconds % 60;
   return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+}
+
+// ファイルピックを実行する関数
+Future<void> pickFile(BuildContext context) async {
+  // ignore: unused_local_variable
+  final filePickerResult = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['mp3'], // Only allow mp3 files to be picked
+  );
 }
