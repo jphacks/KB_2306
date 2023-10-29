@@ -17,13 +17,21 @@ class Home extends HookConsumerWidget {
       appBar: AppBar(),
       drawer: Drawer(
         child: ListView.builder(
-          itemCount: model.musics.length,
+          itemCount: model.musics.length + 1,
           itemBuilder: (context, index) {
-            final music = model.musics[index];
+            if (index == 0) {
+              return ListTile(
+                title: const Text('Add'),
+                onTap: () async {
+                  await viewModel.addMusic();
+                },
+              );
+            }
+            final music = model.musics[index - 1];
             return ListTile(
               title: Text(music.title),
               onTap: () {
-                viewModel.chooseMusic(index);
+                viewModel.chooseMusic(index - 1);
               },
             );
           },
@@ -32,62 +40,69 @@ class Home extends HookConsumerWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              Positioned.fill(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.blue, Colors.purple], //青から紫へのグラデーション変更必須
+          Expanded(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.blue,
+                          Colors.purple
+                        ], //青から紫へのグラデーション変更必須
+                      ),
                     ),
                   ),
                 ),
-              ),
-              if (selectedMusic != null)
-                LyricsReader(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  model: LyricsModelBuilder.create()
-                      .bindLyricToMain(selectedMusic.formattedSegments)
-                      .getModel(),
-                  position: model.sliderProgress.floor(),
-                  lyricUi: viewModel.lyricUI,
-                  playing: model.playing,
-                  size: Size(
-                    double.infinity,
-                    MediaQuery.of(context).size.height * 0.75,
-                  ),
-                  emptyBuilder: () => SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.75,
-                    child: Text(
-                      'No lyrics',
-                      style: viewModel.lyricUI.getOtherMainTextStyle(),
+                if (selectedMusic != null)
+                  LyricsReader(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    model: LyricsModelBuilder.create()
+                        .bindLyricToMain(selectedMusic.formattedSegments)
+                        .getModel(),
+                    position: model.sliderProgress.floor(),
+                    lyricUi: viewModel.lyricUI,
+                    playing: model.playing,
+                    size: Size(
+                      double.infinity,
+                      MediaQuery.of(context).size.height * 0.75,
                     ),
-                  ),
-                  selectLineBuilder: (progress, confirm) => Row(
-                    children: [
-                      IconButton(
-                        onPressed: () async {
-                          confirm.call();
-                        },
-                        icon: const Icon(Icons.play_arrow, color: Colors.green),
+                    emptyBuilder: () => SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.75,
+                      child: Text(
+                        'No lyrics',
+                        style: viewModel.lyricUI.getOtherMainTextStyle(),
                       ),
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(color: Colors.green),
-                          height: 1,
-                          width: double.infinity,
+                    ),
+                    selectLineBuilder: (progress, confirm) => Row(
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            confirm.call();
+                          },
+                          icon:
+                              const Icon(Icons.play_arrow, color: Colors.green),
                         ),
-                      ),
-                      Text(
-                        progress.toString(),
-                        style: const TextStyle(color: Colors.green),
-                      ),
-                    ],
+                        Expanded(
+                          child: Container(
+                            decoration:
+                                const BoxDecoration(color: Colors.green),
+                            height: 1,
+                            width: double.infinity,
+                          ),
+                        ),
+                        Text(
+                          progress.toString(),
+                          style: const TextStyle(color: Colors.green),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
           Expanded(
             child: SingleChildScrollView(

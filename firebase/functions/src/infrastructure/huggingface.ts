@@ -2,8 +2,7 @@
 import { HUGGINGFACE_API_KEY } from "../utils/env";
 import { importClient } from "../utils/gradio-client";
 
-const appRef =
-  "https://sanbasan-lyrics-transcription-api-private.hf.space/--replicas/6drjg/";
+const appRef = "sanbasan/lyrics-transcription-api-private";
 
 const isHuggingfaceApiKey = (token: string): token is `hf_${string}` =>
   /^hf_.*$/.test(token);
@@ -22,27 +21,31 @@ const gradioClient = async (appReference: string): Promise<any> => {
   return client(appReference, { hf_token: token });
 };
 
+type HuggingFaceResponse = {
+  data: unknown[];
+  endpoint: string;
+  fn_index: 0;
+  type: "data";
+};
+
 export const transcribeLyrics = async (
-  audio: Blob,
+  url: string,
   {
     whisperModelName,
   }: {
     whisperModelName: "base" | "small" | "medium" | "large" | "large-v2";
   },
-): Promise<unknown> => {
+): Promise<HuggingFaceResponse> => {
   const app = await gradioClient(appRef);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  const predict = app?.predict.call;
-
-  // Check if predict is a function
-  if (typeof predict !== "function") {
-    throw new Error("Failed to get predict function.");
-  }
-
-  const result = await (predict as CallableFunction)("/predict", [
-    `${whisperModelName},${whisperModelName}`,
-    audio,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  const result = await app.predict("/predict", [
+    whisperModelName,
+    {
+      data: null,
+      name: url,
+      is_file: true,
+    },
   ]);
 
-  return result as unknown;
+  return result as HuggingFaceResponse;
 };

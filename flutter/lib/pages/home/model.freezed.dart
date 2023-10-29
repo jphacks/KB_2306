@@ -22,6 +22,7 @@ mixin _$HomeModel {
   bool get sliderDragging => throw _privateConstructorUsedError;
   double get playerProgress => throw _privateConstructorUsedError;
   bool get playing => throw _privateConstructorUsedError;
+  bool get waitingForTranscription => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeModelCopyWith<HomeModel> get copyWith =>
@@ -39,7 +40,8 @@ abstract class $HomeModelCopyWith<$Res> {
       double sliderProgress,
       bool sliderDragging,
       double playerProgress,
-      bool playing});
+      bool playing,
+      bool waitingForTranscription});
 }
 
 /// @nodoc
@@ -61,6 +63,7 @@ class _$HomeModelCopyWithImpl<$Res, $Val extends HomeModel>
     Object? sliderDragging = null,
     Object? playerProgress = null,
     Object? playing = null,
+    Object? waitingForTranscription = null,
   }) {
     return _then(_value.copyWith(
       musics: null == musics
@@ -87,6 +90,10 @@ class _$HomeModelCopyWithImpl<$Res, $Val extends HomeModel>
           ? _value.playing
           : playing // ignore: cast_nullable_to_non_nullable
               as bool,
+      waitingForTranscription: null == waitingForTranscription
+          ? _value.waitingForTranscription
+          : waitingForTranscription // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -105,7 +112,8 @@ abstract class _$$HomeModelImplCopyWith<$Res>
       double sliderProgress,
       bool sliderDragging,
       double playerProgress,
-      bool playing});
+      bool playing,
+      bool waitingForTranscription});
 }
 
 /// @nodoc
@@ -125,6 +133,7 @@ class __$$HomeModelImplCopyWithImpl<$Res>
     Object? sliderDragging = null,
     Object? playerProgress = null,
     Object? playing = null,
+    Object? waitingForTranscription = null,
   }) {
     return _then(_$HomeModelImpl(
       musics: null == musics
@@ -151,6 +160,10 @@ class __$$HomeModelImplCopyWithImpl<$Res>
           ? _value.playing
           : playing // ignore: cast_nullable_to_non_nullable
               as bool,
+      waitingForTranscription: null == waitingForTranscription
+          ? _value.waitingForTranscription
+          : waitingForTranscription // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -164,7 +177,8 @@ class _$HomeModelImpl implements _HomeModel {
       this.sliderProgress = 0,
       this.sliderDragging = false,
       this.playerProgress = 0,
-      this.playing = false})
+      this.playing = false,
+      this.waitingForTranscription = false})
       : _musics = musics;
 
   final List<Music> _musics;
@@ -190,10 +204,13 @@ class _$HomeModelImpl implements _HomeModel {
   @override
   @JsonKey()
   final bool playing;
+  @override
+  @JsonKey()
+  final bool waitingForTranscription;
 
   @override
   String toString() {
-    return 'HomeModel(musics: $musics, selectedMusic: $selectedMusic, sliderProgress: $sliderProgress, sliderDragging: $sliderDragging, playerProgress: $playerProgress, playing: $playing)';
+    return 'HomeModel(musics: $musics, selectedMusic: $selectedMusic, sliderProgress: $sliderProgress, sliderDragging: $sliderDragging, playerProgress: $playerProgress, playing: $playing, waitingForTranscription: $waitingForTranscription)';
   }
 
   @override
@@ -210,7 +227,10 @@ class _$HomeModelImpl implements _HomeModel {
                 other.sliderDragging == sliderDragging) &&
             (identical(other.playerProgress, playerProgress) ||
                 other.playerProgress == playerProgress) &&
-            (identical(other.playing, playing) || other.playing == playing));
+            (identical(other.playing, playing) || other.playing == playing) &&
+            (identical(
+                    other.waitingForTranscription, waitingForTranscription) ||
+                other.waitingForTranscription == waitingForTranscription));
   }
 
   @override
@@ -221,7 +241,8 @@ class _$HomeModelImpl implements _HomeModel {
       sliderProgress,
       sliderDragging,
       playerProgress,
-      playing);
+      playing,
+      waitingForTranscription);
 
   @JsonKey(ignore: true)
   @override
@@ -237,7 +258,8 @@ abstract class _HomeModel implements HomeModel {
       final double sliderProgress,
       final bool sliderDragging,
       final double playerProgress,
-      final bool playing}) = _$HomeModelImpl;
+      final bool playing,
+      final bool waitingForTranscription}) = _$HomeModelImpl;
 
   @override
   List<Music> get musics;
@@ -251,6 +273,8 @@ abstract class _HomeModel implements HomeModel {
   double get playerProgress;
   @override
   bool get playing;
+  @override
+  bool get waitingForTranscription;
   @override
   @JsonKey(ignore: true)
   _$$HomeModelImplCopyWith<_$HomeModelImpl> get copyWith =>

@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter_firebase/entities/transcription_segment.dart';
+import 'package:hive/hive.dart';
+
+part 'music.g.dart';
 
 String _formatTime(double time) {
   final minutes = time ~/ 60;
@@ -8,6 +11,7 @@ String _formatTime(double time) {
   return '${minutes.toString().padLeft(2, '0')}:${seconds.toStringAsFixed(2).padLeft(5, '0')}';
 }
 
+@HiveType(typeId: 0)
 class Music {
   const Music({
     required this.id,
@@ -20,13 +24,21 @@ class Music {
     this.album,
   });
 
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final Uint8List audio;
+  @HiveField(2)
   final String title;
+  @HiveField(3)
   final String? artist;
+  @HiveField(4)
   final String? album;
+  @HiveField(5)
   final List<TranscriptionSegment> segments;
+  @HiveField(6)
   final DateTime createdAt;
+  @HiveField(7)
   final DateTime updatedAt;
 
   double get end => segments.isEmpty ? 0 : segments.last.end;

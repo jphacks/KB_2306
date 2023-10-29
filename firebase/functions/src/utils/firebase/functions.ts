@@ -15,9 +15,11 @@ type FunctionSecrets = "HUGGINGFACE_API_KEY";
 export const functions = ({
   secrets,
   memory,
+  timeoutSeconds,
 }: {
   secrets: FunctionSecrets[];
   memory: MemoryOption;
+  timeoutSeconds?: number;
 }): {
   database: typeof database;
   https: typeof https;
@@ -30,6 +32,7 @@ export const functions = ({
     region: "asia-northeast1",
     secrets,
     maxInstances: 10,
+    timeoutSeconds: timeoutSeconds ?? 540,
   });
   return {
     database,

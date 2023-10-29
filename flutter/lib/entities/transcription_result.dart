@@ -12,7 +12,7 @@ class TranscriptionResult {
       TranscriptionResult(
         success: map['success'] as bool,
         text: map['text'] as String,
-        language: map['language'] as String,
+        language: map['language'] as String? ?? '',
         segments: (map['segments'] as List<dynamic>)
             .map((e) => TranscriptionSegment.fromMap(e as Map<String, dynamic>))
             .toList(),

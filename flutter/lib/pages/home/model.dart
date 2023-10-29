@@ -12,5 +12,6 @@ abstract class HomeModel with _$HomeModel {
     @Default(false) bool sliderDragging,
     @Default(0) double playerProgress,
     @Default(false) bool playing,
+    @Default(false) bool waitingForTranscription,
   }) = _HomeModel;
 }

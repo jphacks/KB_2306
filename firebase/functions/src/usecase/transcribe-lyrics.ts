@@ -1,4 +1,6 @@
 import { transcribeLyrics as _transcribeLyrics } from "../domain/lyrics-transcription-result/business-logic";
+import { STORAGE_PUBLIC_URL } from "../utils/env";
+import admin from "../utils/firebase/admin";
 
 export type ShrinkedLyricsTranscriptionResult = {
   success: boolean;
@@ -17,9 +19,19 @@ export type ShrinkedLyricsTranscriptionResult = {
 };
 
 export const transcribeLyrics = async (
-  audio: Blob,
+  audio: ArrayBuffer,
+  fileName: string,
 ): Promise<ShrinkedLyricsTranscriptionResult> => {
-  const result = await _transcribeLyrics(audio);
+  // TODO: Create interface for storage
+  const storage = admin.storage();
+  const bucket = storage.bucket();
+  const file = bucket.file(fileName);
+  await file.save(Buffer.from(audio), {
+    contentType: `audio/${fileName.split(".").pop() ?? "mp3"}`,
+  });
+  const url = `${STORAGE_PUBLIC_URL}${fileName}?alt=media`;
+
+  const result = await _transcribeLyrics(url);
 
   if (result === null) {
     return {
