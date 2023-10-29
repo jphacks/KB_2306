@@ -1,7 +1,6 @@
 # LyricScribe
 
-<img src="https://github.com/jphacks/KB_2306/assets/147470382/ab45e696-5077-4fdd-b725-9b5401173502" width="500px">
-
+<img src="https://github.com/jphacks/KB_2306/assets/147470382/1e7d8f9a-9485-43be-9f01-a6de53ec822a" width="500px">
 
 ## 製品概要
 ### Lyrics × Tech
