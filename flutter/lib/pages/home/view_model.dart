@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_firebase/entities/music.dart';
-import 'package:flutter_firebase/pages/home/model.dart';
-import 'package:flutter_firebase/repositories/music/repository.dart';
-import 'package:flutter_firebase/repositories/transcription/repository.dart';
-import 'package:flutter_firebase/utils/view_model_state_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lyricscribe/entities/music.dart';
+import 'package:lyricscribe/pages/home/model.dart';
+import 'package:lyricscribe/repositories/music/repository.dart';
+import 'package:lyricscribe/repositories/transcription/repository.dart';
+import 'package:lyricscribe/utils/view_model_state_notifier.dart';
 
 final homeViewModelProvider =
     StateNotifierProvider.autoDispose<HomeViewModel, HomeModel>(

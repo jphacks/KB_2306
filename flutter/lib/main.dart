@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/color_schemes.g.dart';
-import 'package:flutter_firebase/entities/music.dart';
-import 'package:flutter_firebase/entities/transcription_segment.dart';
-import 'package:flutter_firebase/firebase_options.dart';
-import 'package:flutter_firebase/helpers/hive.dart';
-import 'package:flutter_firebase/pages/home/view.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lyricscribe/color_schemes.g.dart';
+import 'package:lyricscribe/entities/music.dart';
+import 'package:lyricscribe/entities/transcription_segment.dart';
+import 'package:lyricscribe/firebase_options.dart';
+import 'package:lyricscribe/helpers/hive.dart';
+import 'package:lyricscribe/pages/home/view.dart';
 
 Future<void> main() async {
   await runZonedGuarded(

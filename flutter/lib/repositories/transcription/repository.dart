@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flutter_firebase/entities/music.dart';
-import 'package:flutter_firebase/entities/transcription_result.dart';
-import 'package:flutter_firebase/helpers/cloud_functions.dart';
-import 'package:flutter_firebase/helpers/file_picker.dart';
-import 'package:flutter_firebase/helpers/hive.dart';
-import 'package:flutter_firebase/utils/random_string.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lyricscribe/entities/music.dart';
+import 'package:lyricscribe/entities/transcription_result.dart';
+import 'package:lyricscribe/helpers/cloud_functions.dart';
+import 'package:lyricscribe/helpers/file_picker.dart';
+import 'package:lyricscribe/helpers/hive.dart';
+import 'package:lyricscribe/utils/random_string.dart';
 
 final transcriptionRepositoryProvider = Provider<TranscriptionRepository>(
   (ref) => TranscriptionRepository(

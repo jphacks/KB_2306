@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firebase/pages/home/view_model.dart';
 import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lyricscribe/pages/home/view_model.dart';
 
 class Home extends HookConsumerWidget {
   const Home({super.key});

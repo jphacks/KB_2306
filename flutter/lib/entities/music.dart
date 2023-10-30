@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:flutter_firebase/entities/transcription_segment.dart';
 import 'package:hive/hive.dart';
+import 'package:lyricscribe/entities/transcription_segment.dart';
 
 part 'music.g.dart';
 

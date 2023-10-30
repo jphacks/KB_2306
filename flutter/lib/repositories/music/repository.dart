@@ -1,6 +1,6 @@
-import 'package:flutter_firebase/entities/music.dart';
-import 'package:flutter_firebase/helpers/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lyricscribe/entities/music.dart';
+import 'package:lyricscribe/helpers/hive.dart';
 
 final musicRepositoryProvider = Provider<MusicRepository>(
   (ref) => MusicRepository(databaseHelper: ref.read(hiveHelperProvider)),

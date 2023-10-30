@@ -1,4 +1,4 @@
-import 'package:flutter_firebase/entities/transcription_segment.dart';
+import 'package:lyricscribe/entities/transcription_segment.dart';
 
 class TranscriptionResult {
   const TranscriptionResult({

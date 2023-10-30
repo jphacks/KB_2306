@@ -1,5 +1,5 @@
-import 'package:flutter_firebase/entities/music.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lyricscribe/entities/music.dart';
 
 part 'model.freezed.dart';
 
