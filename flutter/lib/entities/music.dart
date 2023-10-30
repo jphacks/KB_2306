@@ -41,7 +41,8 @@ class Music {
   @HiveField(9)
   final String? fileName;
 
-  double get end => segments.isEmpty ? 0 : segments.last.end;
+  // 1 second padding
+  double get end => segments.isEmpty ? 0 : segments.last.end + 3;
 
   List<double> get segmentStarts => segments.map((e) => e.start).toList();
 

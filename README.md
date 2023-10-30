@@ -124,6 +124,7 @@ https://github.com/jphacks/KB_2306/assets/53816975/e0c310ff-33fb-4ac9-8b6c-cfcec
 
 #### 特に力を入れた項目
 
+- 音楽再生の画面
 - モデルの実行系を自作
   - OpenAI の API などを利用せずに Hugging Face で実行
     - [`huggingface/src/services/`](https://github.com/jphacks/KB_2306/tree/master/huggingface/src/services/)
@@ -131,4 +132,5 @@ https://github.com/jphacks/KB_2306/assets/53816975/e0c310ff-33fb-4ac9-8b6c-cfcec
 - データ管理
   - IndexedDB ベースでブラウザにデータを保存
     - [`flutter/lib/helpers/hive.dart`](https://github.com/jphacks/KB_2306/tree/master/flutter/lib/helpers/hive.dart)
+    - [`flutter/lib/entities/music.dart`](https://github.com/jphacks/KB_2306/blob/master/flutter/lib/entities/music.dart)
       - 曲と歌詞のデータを保存する

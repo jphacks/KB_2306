@@ -186,7 +186,7 @@ class Home extends HookConsumerWidget {
                         await viewModel.selectPreviousMusic();
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.grey,
+                        foregroundColor: Colors.grey[800],
                         backgroundColor: Colors.white,
                         elevation: 5,
                         shape: const CircleBorder(),

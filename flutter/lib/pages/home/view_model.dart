@@ -58,12 +58,13 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
 
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       final selectedMusic = state.selectedMusic;
-      if (!state.playing || selectedMusic == null) {
+      if (!state.playing || state.sliderDragging || selectedMusic == null) {
         return;
       }
       final sliderProgress = state.sliderProgress + 0.1; // add 100ms
       if (sliderProgress >= selectedMusic.end) {
         state = state.copyWith(sliderProgress: selectedMusic.end);
+        Future.microtask(selectNextMusic);
       } else {
         state = state.copyWith(sliderProgress: sliderProgress);
       }
@@ -111,6 +112,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       playing: true,
     );
     await _startPlayer();
+    await audioPlayer.resume();
   }
 
   Future<void> _startPlayer() async {
