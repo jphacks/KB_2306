@@ -7,7 +7,6 @@ import 'package:flutter_firebase/pages/home/model.dart';
 import 'package:flutter_firebase/repositories/music/repository.dart';
 import 'package:flutter_firebase/repositories/transcription/repository.dart';
 import 'package:flutter_firebase/utils/view_model_state_notifier.dart';
-import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final homeViewModelProvider =
@@ -28,6 +27,47 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
     _papersSubscription = _musicRepository.musicsStream.listen((musics) {
       state = state.copyWith(musics: musics);
     });
+
+    _positionChangeSubscription =
+        audioPlayer.onPositionChanged.listen((duration) {
+      final selectedMusic = state.selectedMusic;
+      if (state.sliderDragging || selectedMusic == null) {
+        return;
+      }
+
+      final sliderProgress =
+          duration.inSeconds + (duration.inMilliseconds.remainder(1000) / 1000);
+
+      if (sliderProgress >
+          selectedMusic.segmentEnds[state.currentSegmentIndex]) {
+        // first segment that end is greater than sliderProgress
+        final currentSegmentIndex = selectedMusic.segmentStarts
+            .indexWhere((element) => element > sliderProgress);
+        state = state.copyWith(
+          sliderProgress: sliderProgress,
+          currentSegmentIndex: currentSegmentIndex,
+        );
+      }
+    });
+
+    _playerStateSubscription = audioPlayer.onPlayerStateChanged.listen(
+      (playerState) {
+        state = state.copyWith(playing: playerState == PlayerState.playing);
+      },
+    );
+
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      final selectedMusic = state.selectedMusic;
+      if (!state.playing || selectedMusic == null) {
+        return;
+      }
+      final sliderProgress = state.sliderProgress + 0.1; // add 100ms
+      if (sliderProgress >= selectedMusic.end) {
+        state = state.copyWith(sliderProgress: selectedMusic.end);
+      } else {
+        state = state.copyWith(sliderProgress: sliderProgress);
+      }
+    });
   }
 
   final MusicRepository _musicRepository;
@@ -39,14 +79,21 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       TextEditingController();
   TextEditingController get titleTextEditingController =>
       _titleTextEditingController;
+  late final StreamSubscription<Duration> _positionChangeSubscription;
+  late final StreamSubscription<PlayerState> _playerStateSubscription;
+  late final Timer _timer;
 
   final audioPlayer = AudioPlayer();
-  final lyricUI = UINetease();
 
   void clearTitleTextEditingController() => _titleTextEditingController.clear();
 
   Future<void> addMusic() async {
+    if (state.waitingForTranscription) {
+      return;
+    }
+    state = state.copyWith(waitingForTranscription: true);
     await _transcriptionRepository.transcribe();
+    state = state.copyWith(waitingForTranscription: false);
   }
 
   Future<void> updateTitle(String musicId) async {
@@ -59,8 +106,9 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
   Future<void> chooseMusic(int index) async {
     state = state.copyWith(
       selectedMusic: state.musics[index],
+      selectedMusicIndex: index,
       sliderProgress: 0,
-      playerProgress: 0,
+      playing: true,
     );
     await _startPlayer();
   }
@@ -72,6 +120,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
     }
     state = state.copyWith(playing: true);
     await audioPlayer.play(UrlSource(music.audioUrl));
+    await resumePlayer();
   }
 
   Future<void> pausePlayer() async {
@@ -92,9 +141,8 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
     state = state.copyWith(
       sliderDragging: false,
       sliderProgress: value,
-      playerProgress: value,
     );
-    await audioPlayer.seek(Duration(milliseconds: value.toInt()));
+    await audioPlayer.seek(Duration(seconds: value.toInt()));
   }
 
   void onSliderChanged(double value) {
@@ -105,9 +153,34 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
     await _musicRepository.deleteMusic(musicId);
   }
 
+  Future<void> selectPreviousMusic() async {
+    final musics = state.musics;
+    final selectedMusicIndex = state.selectedMusicIndex;
+    if (musics.isEmpty || selectedMusicIndex == null) {
+      return;
+    }
+    final previousMusicIndex =
+        selectedMusicIndex == 0 ? musics.length - 1 : selectedMusicIndex - 1;
+    await chooseMusic(previousMusicIndex);
+  }
+
+  Future<void> selectNextMusic() async {
+    final musics = state.musics;
+    final selectedMusicIndex = state.selectedMusicIndex;
+    if (musics.isEmpty || selectedMusicIndex == null) {
+      return;
+    }
+    final nextMusicIndex =
+        selectedMusicIndex == musics.length - 1 ? 0 : selectedMusicIndex + 1;
+    await chooseMusic(nextMusicIndex);
+  }
+
   @override
   Future<void> dispose() async {
     await _papersSubscription.cancel();
+    await _positionChangeSubscription.cancel();
+    await _playerStateSubscription.cancel();
+    _timer.cancel();
     super.dispose();
   }
 }

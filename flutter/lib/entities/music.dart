@@ -5,12 +5,6 @@ import 'package:hive/hive.dart';
 
 part 'music.g.dart';
 
-String _formatTime(double time) {
-  final minutes = time ~/ 60;
-  final seconds = time % 60;
-  return '${minutes.toString().padLeft(2, '0')}:${seconds.toStringAsFixed(2).padLeft(5, '0')}';
-}
-
 @HiveType(typeId: 0)
 class Music {
   const Music({
@@ -49,21 +43,34 @@ class Music {
 
   double get end => segments.isEmpty ? 0 : segments.last.end;
 
+  List<double> get segmentStarts => segments.map((e) => e.start).toList();
+
+  List<double> get segmentEnds => segments.map((e) => e.end).toList();
+
   String get formattedSegments {
     final buffer = StringBuffer()
       ..writeln('[ti:$title]')
       ..writeln('[ar:${artist ?? ''}]')
       ..writeln('[al:${album ?? ''}]')
       ..writeln('[by:]')
-      ..writeln('[offset:0]')
-      ..writeln('[00:00.00]$title');
+      ..writeln('[offset:0]');
 
     segments.forEach((segment) {
-      final endTime = _formatTime(segment.end);
-      buffer.writeln('[$endTime]${segment.text}');
-    });
+      final startMillis = (segment.start * 1000).toInt();
+      final endMillis = (segment.end * 1000).toInt();
+      final durationMillis = endMillis - startMillis;
 
-    print(buffer);
+      final wordsBuffer = StringBuffer();
+      segment.words.forEach((word) {
+        final wordStartMillis = (word.start * 1000).toInt();
+        final wordEndMillis = (word.end * 1000).toInt();
+        final wordDurationMillis = wordEndMillis - wordStartMillis;
+        wordsBuffer
+            .write('($wordStartMillis,$wordDurationMillis)${word.word} ');
+      });
+
+      buffer.writeln('[$startMillis,$durationMillis]$wordsBuffer');
+    });
 
     return buffer.toString();
   }

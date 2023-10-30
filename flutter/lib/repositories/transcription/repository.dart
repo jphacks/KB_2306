@@ -47,7 +47,6 @@ class TranscriptionRepository {
     if (data['success'] != true) {
       throw Exception('Transcription failed.');
     }
-    print(data);
 
     final transcriptionResult = TranscriptionResult.fromMap(data);
 

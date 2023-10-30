@@ -18,11 +18,12 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeModel {
   List<Music> get musics => throw _privateConstructorUsedError;
   Music? get selectedMusic => throw _privateConstructorUsedError;
+  int? get selectedMusicIndex => throw _privateConstructorUsedError;
   double get sliderProgress => throw _privateConstructorUsedError;
   bool get sliderDragging => throw _privateConstructorUsedError;
-  double get playerProgress => throw _privateConstructorUsedError;
   bool get playing => throw _privateConstructorUsedError;
   bool get waitingForTranscription => throw _privateConstructorUsedError;
+  int get currentSegmentIndex => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeModelCopyWith<HomeModel> get copyWith =>
@@ -37,11 +38,12 @@ abstract class $HomeModelCopyWith<$Res> {
   $Res call(
       {List<Music> musics,
       Music? selectedMusic,
+      int? selectedMusicIndex,
       double sliderProgress,
       bool sliderDragging,
-      double playerProgress,
       bool playing,
-      bool waitingForTranscription});
+      bool waitingForTranscription,
+      int currentSegmentIndex});
 }
 
 /// @nodoc
@@ -59,11 +61,12 @@ class _$HomeModelCopyWithImpl<$Res, $Val extends HomeModel>
   $Res call({
     Object? musics = null,
     Object? selectedMusic = freezed,
+    Object? selectedMusicIndex = freezed,
     Object? sliderProgress = null,
     Object? sliderDragging = null,
-    Object? playerProgress = null,
     Object? playing = null,
     Object? waitingForTranscription = null,
+    Object? currentSegmentIndex = null,
   }) {
     return _then(_value.copyWith(
       musics: null == musics
@@ -74,6 +77,10 @@ class _$HomeModelCopyWithImpl<$Res, $Val extends HomeModel>
           ? _value.selectedMusic
           : selectedMusic // ignore: cast_nullable_to_non_nullable
               as Music?,
+      selectedMusicIndex: freezed == selectedMusicIndex
+          ? _value.selectedMusicIndex
+          : selectedMusicIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
       sliderProgress: null == sliderProgress
           ? _value.sliderProgress
           : sliderProgress // ignore: cast_nullable_to_non_nullable
@@ -82,10 +89,6 @@ class _$HomeModelCopyWithImpl<$Res, $Val extends HomeModel>
           ? _value.sliderDragging
           : sliderDragging // ignore: cast_nullable_to_non_nullable
               as bool,
-      playerProgress: null == playerProgress
-          ? _value.playerProgress
-          : playerProgress // ignore: cast_nullable_to_non_nullable
-              as double,
       playing: null == playing
           ? _value.playing
           : playing // ignore: cast_nullable_to_non_nullable
@@ -94,6 +97,10 @@ class _$HomeModelCopyWithImpl<$Res, $Val extends HomeModel>
           ? _value.waitingForTranscription
           : waitingForTranscription // ignore: cast_nullable_to_non_nullable
               as bool,
+      currentSegmentIndex: null == currentSegmentIndex
+          ? _value.currentSegmentIndex
+          : currentSegmentIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -109,11 +116,12 @@ abstract class _$$HomeModelImplCopyWith<$Res>
   $Res call(
       {List<Music> musics,
       Music? selectedMusic,
+      int? selectedMusicIndex,
       double sliderProgress,
       bool sliderDragging,
-      double playerProgress,
       bool playing,
-      bool waitingForTranscription});
+      bool waitingForTranscription,
+      int currentSegmentIndex});
 }
 
 /// @nodoc
@@ -129,11 +137,12 @@ class __$$HomeModelImplCopyWithImpl<$Res>
   $Res call({
     Object? musics = null,
     Object? selectedMusic = freezed,
+    Object? selectedMusicIndex = freezed,
     Object? sliderProgress = null,
     Object? sliderDragging = null,
-    Object? playerProgress = null,
     Object? playing = null,
     Object? waitingForTranscription = null,
+    Object? currentSegmentIndex = null,
   }) {
     return _then(_$HomeModelImpl(
       musics: null == musics
@@ -144,6 +153,10 @@ class __$$HomeModelImplCopyWithImpl<$Res>
           ? _value.selectedMusic
           : selectedMusic // ignore: cast_nullable_to_non_nullable
               as Music?,
+      selectedMusicIndex: freezed == selectedMusicIndex
+          ? _value.selectedMusicIndex
+          : selectedMusicIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
       sliderProgress: null == sliderProgress
           ? _value.sliderProgress
           : sliderProgress // ignore: cast_nullable_to_non_nullable
@@ -152,10 +165,6 @@ class __$$HomeModelImplCopyWithImpl<$Res>
           ? _value.sliderDragging
           : sliderDragging // ignore: cast_nullable_to_non_nullable
               as bool,
-      playerProgress: null == playerProgress
-          ? _value.playerProgress
-          : playerProgress // ignore: cast_nullable_to_non_nullable
-              as double,
       playing: null == playing
           ? _value.playing
           : playing // ignore: cast_nullable_to_non_nullable
@@ -164,6 +173,10 @@ class __$$HomeModelImplCopyWithImpl<$Res>
           ? _value.waitingForTranscription
           : waitingForTranscription // ignore: cast_nullable_to_non_nullable
               as bool,
+      currentSegmentIndex: null == currentSegmentIndex
+          ? _value.currentSegmentIndex
+          : currentSegmentIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -174,11 +187,12 @@ class _$HomeModelImpl implements _HomeModel {
   const _$HomeModelImpl(
       {final List<Music> musics = const [],
       this.selectedMusic,
+      this.selectedMusicIndex,
       this.sliderProgress = 0,
       this.sliderDragging = false,
-      this.playerProgress = 0,
       this.playing = false,
-      this.waitingForTranscription = false})
+      this.waitingForTranscription = false,
+      this.currentSegmentIndex = 0})
       : _musics = musics;
 
   final List<Music> _musics;
@@ -193,6 +207,8 @@ class _$HomeModelImpl implements _HomeModel {
   @override
   final Music? selectedMusic;
   @override
+  final int? selectedMusicIndex;
+  @override
   @JsonKey()
   final double sliderProgress;
   @override
@@ -200,17 +216,17 @@ class _$HomeModelImpl implements _HomeModel {
   final bool sliderDragging;
   @override
   @JsonKey()
-  final double playerProgress;
-  @override
-  @JsonKey()
   final bool playing;
   @override
   @JsonKey()
   final bool waitingForTranscription;
+  @override
+  @JsonKey()
+  final int currentSegmentIndex;
 
   @override
   String toString() {
-    return 'HomeModel(musics: $musics, selectedMusic: $selectedMusic, sliderProgress: $sliderProgress, sliderDragging: $sliderDragging, playerProgress: $playerProgress, playing: $playing, waitingForTranscription: $waitingForTranscription)';
+    return 'HomeModel(musics: $musics, selectedMusic: $selectedMusic, selectedMusicIndex: $selectedMusicIndex, sliderProgress: $sliderProgress, sliderDragging: $sliderDragging, playing: $playing, waitingForTranscription: $waitingForTranscription, currentSegmentIndex: $currentSegmentIndex)';
   }
 
   @override
@@ -221,16 +237,18 @@ class _$HomeModelImpl implements _HomeModel {
             const DeepCollectionEquality().equals(other._musics, _musics) &&
             (identical(other.selectedMusic, selectedMusic) ||
                 other.selectedMusic == selectedMusic) &&
+            (identical(other.selectedMusicIndex, selectedMusicIndex) ||
+                other.selectedMusicIndex == selectedMusicIndex) &&
             (identical(other.sliderProgress, sliderProgress) ||
                 other.sliderProgress == sliderProgress) &&
             (identical(other.sliderDragging, sliderDragging) ||
                 other.sliderDragging == sliderDragging) &&
-            (identical(other.playerProgress, playerProgress) ||
-                other.playerProgress == playerProgress) &&
             (identical(other.playing, playing) || other.playing == playing) &&
             (identical(
                     other.waitingForTranscription, waitingForTranscription) ||
-                other.waitingForTranscription == waitingForTranscription));
+                other.waitingForTranscription == waitingForTranscription) &&
+            (identical(other.currentSegmentIndex, currentSegmentIndex) ||
+                other.currentSegmentIndex == currentSegmentIndex));
   }
 
   @override
@@ -238,11 +256,12 @@ class _$HomeModelImpl implements _HomeModel {
       runtimeType,
       const DeepCollectionEquality().hash(_musics),
       selectedMusic,
+      selectedMusicIndex,
       sliderProgress,
       sliderDragging,
-      playerProgress,
       playing,
-      waitingForTranscription);
+      waitingForTranscription,
+      currentSegmentIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -255,26 +274,29 @@ abstract class _HomeModel implements HomeModel {
   const factory _HomeModel(
       {final List<Music> musics,
       final Music? selectedMusic,
+      final int? selectedMusicIndex,
       final double sliderProgress,
       final bool sliderDragging,
-      final double playerProgress,
       final bool playing,
-      final bool waitingForTranscription}) = _$HomeModelImpl;
+      final bool waitingForTranscription,
+      final int currentSegmentIndex}) = _$HomeModelImpl;
 
   @override
   List<Music> get musics;
   @override
   Music? get selectedMusic;
   @override
+  int? get selectedMusicIndex;
+  @override
   double get sliderProgress;
   @override
   bool get sliderDragging;
   @override
-  double get playerProgress;
-  @override
   bool get playing;
   @override
   bool get waitingForTranscription;
+  @override
+  int get currentSegmentIndex;
   @override
   @JsonKey(ignore: true)
   _$$HomeModelImplCopyWith<_$HomeModelImpl> get copyWith =>

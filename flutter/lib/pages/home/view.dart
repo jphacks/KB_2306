@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase/pages/home/view_model.dart';
+import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,8 +14,12 @@ class Home extends HookConsumerWidget {
     final selectedMusic = model.selectedMusic;
     final viewModel = ref.watch(homeViewModelProvider.notifier);
 
+    final lyricsUI = UINetease(highlight: false);
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(selectedMusic?.title ?? 'Please select a music'),
+      ),
       drawer: Drawer(
         child: ListView.builder(
           itemCount: model.musics.length + 1,
@@ -70,9 +75,9 @@ class Home extends HookConsumerWidget {
                     model: LyricsModelBuilder.create()
                         .bindLyricToMain(selectedMusic.formattedSegments)
                         .getModel(),
-                    position: model.sliderProgress.floor(),
-                    lyricUi: viewModel.lyricUI,
-                    playing: model.playing,
+                    position: model.sliderProgress.ceil() * 1000,
+                    lyricUi: lyricsUI,
+                    playing: false,
                     size: Size(
                       double.infinity,
                       MediaQuery.of(context).size.height * 0.75,
@@ -81,31 +86,8 @@ class Home extends HookConsumerWidget {
                       height: MediaQuery.of(context).size.height * 0.75,
                       child: Text(
                         'No lyrics',
-                        style: viewModel.lyricUI.getOtherMainTextStyle(),
+                        style: lyricsUI.getOtherMainTextStyle(),
                       ),
-                    ),
-                    selectLineBuilder: (progress, confirm) => Row(
-                      children: [
-                        IconButton(
-                          onPressed: () async {
-                            confirm.call();
-                          },
-                          icon:
-                              const Icon(Icons.play_arrow, color: Colors.green),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration:
-                                const BoxDecoration(color: Colors.green),
-                            height: 1,
-                            width: double.infinity,
-                          ),
-                        ),
-                        Text(
-                          progress.toString(),
-                          style: const TextStyle(color: Colors.green),
-                        ),
-                      ],
                     ),
                   ),
               ],
@@ -114,38 +96,36 @@ class Home extends HookConsumerWidget {
           Column(
             children: [
               Container(height: 15),
-              if (model.sliderProgress <
-                  (model.selectedMusic?.end ?? double.infinity))
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Slider(
-                        max: model.selectedMusic?.end ?? double.infinity,
-                        label: model.sliderProgress.toString(),
-                        value: model.sliderProgress,
-                        activeColor: Colors.blueGrey,
-                        inactiveColor: Colors.blue,
-                        onChanged: viewModel.onSliderChanged,
-                        onChangeStart: (value) {
-                          viewModel.onSliderChangeStart();
-                        },
-                        onChangeEnd: (value) async {
-                          await viewModel.onSliderChangeEnd(value);
-                        },
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Slider(
+                      max: model.selectedMusic?.end ?? double.infinity,
+                      label: model.sliderProgress.toString(),
+                      value: model.sliderProgress,
+                      activeColor: Colors.blueGrey,
+                      inactiveColor: Colors.blue,
+                      onChanged: viewModel.onSliderChanged,
+                      onChangeStart: (value) {
+                        viewModel.onSliderChangeStart();
+                      },
+                      onChangeEnd: (value) async {
+                        await viewModel.onSliderChangeEnd(value);
+                      },
                     ),
-                    Text(
-                      '${_formatTime(model.playerProgress)}/${_formatTime(model.selectedMusic?.end ?? 0)}',
-                    ),
-                  ],
-                ),
+                  ),
+                  Text(
+                    '${_formatTime(model.sliderProgress)}/${_formatTime(model.selectedMusic?.end ?? 0)}',
+                  ),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // 前の曲に関する処理をここに追加します。
+                    onPressed: () async {
+                      await viewModel.selectPreviousMusic();
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.grey,
@@ -176,8 +156,8 @@ class Home extends HookConsumerWidget {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      // 次の曲に関する処理をここに追加します。
+                    onPressed: () async {
+                      await viewModel.selectNextMusic();
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.grey,
@@ -198,7 +178,7 @@ class Home extends HookConsumerWidget {
 }
 
 String _formatTime(double time) {
-  final minutes = time ~/ 60;
-  final seconds = time % 60;
-  return '${minutes.toString().padLeft(2, '0')}:${seconds.toStringAsFixed(2).padLeft(5, '0')}';
+  final minutes = (time ~/ 60).toString().padLeft(2, '0');
+  final seconds = (time % 60).floor().toString().padLeft(2, '0');
+  return '$minutes:$seconds';
 }
