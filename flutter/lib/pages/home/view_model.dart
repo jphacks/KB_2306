@@ -120,7 +120,6 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
     }
     state = state.copyWith(playing: true);
     await audioPlayer.play(UrlSource(music.audioUrl));
-    await resumePlayer();
   }
 
   Future<void> pausePlayer() async {
@@ -134,18 +133,27 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
   }
 
   void onSliderChangeStart() {
+    if (state.selectedMusic == null) {
+      return;
+    }
     state = state.copyWith(sliderDragging: true);
   }
 
   Future<void> onSliderChangeEnd(double value) async {
+    if (state.selectedMusic == null) {
+      return;
+    }
     state = state.copyWith(
       sliderDragging: false,
       sliderProgress: value,
     );
-    await audioPlayer.seek(Duration(seconds: value.toInt()));
+    await audioPlayer.seek(Duration(milliseconds: value.toInt() * 1000));
   }
 
   void onSliderChanged(double value) {
+    if (state.selectedMusic == null) {
+      return;
+    }
     state = state.copyWith(sliderProgress: value);
   }
 
