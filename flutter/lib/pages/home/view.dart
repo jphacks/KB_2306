@@ -20,19 +20,29 @@ class Home extends HookConsumerWidget {
           itemCount: model.musics.length + 1,
           itemBuilder: (context, index) {
             if (index == 0) {
-              return ListTile(
-                title: const Text('Add'),
-                onTap: () async {
+              return ElevatedButton(
+                onPressed: () async {
                   await viewModel.addMusic();
                 },
+                child: const Text('Add'),
               );
             }
             final music = model.musics[index - 1];
             return ListTile(
-              title: Text(music.title),
-              onTap: () {
-                viewModel.chooseMusic(index - 1);
+              title: Text(
+                music.title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              onTap: () async {
+                await viewModel.chooseMusic(index - 1);
               },
+              trailing: IconButton(
+                onPressed: () async {
+                  await viewModel.deleteMusic(music.id);
+                },
+                icon: const Icon(Icons.delete),
+              ),
             );
           },
         ),
@@ -49,10 +59,7 @@ class Home extends HookConsumerWidget {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [
-                          Colors.blue,
-                          Colors.purple
-                        ], //青から紫へのグラデーション変更必須
+                        colors: [Colors.blue, Colors.purple],
                       ),
                     ),
                   ),
@@ -104,96 +111,85 @@ class Home extends HookConsumerWidget {
               ],
             ),
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(height: 15),
-                  //進行バーを最大値ではないとき表示
-                  if (model.sliderProgress <
-                      (model.selectedMusic?.end ?? double.infinity))
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //進行バー
-                        Expanded(
-                          child: Slider(
-                            max: model.selectedMusic?.end ?? double.infinity,
-                            label: model.sliderProgress.toString(),
-                            value: model.sliderProgress,
-                            activeColor: Colors.blueGrey,
-                            inactiveColor: Colors.blue,
-                            onChanged: viewModel.onSliderChanged,
-                            onChangeStart: (value) {
-                              viewModel.onSliderChangeStart();
-                            },
-                            onChangeEnd: (value) async {
-                              await viewModel.onSliderChangeEnd(value);
-                            },
-                          ),
-                        ),
-                        //時間のテキスト
-                        Text(
-                          '${_formatTime(model.playerProgress)}/${_formatTime(model.selectedMusic?.end ?? 0)}',
-                        ),
-                      ],
+          Column(
+            children: [
+              Container(height: 15),
+              if (model.sliderProgress <
+                  (model.selectedMusic?.end ?? double.infinity))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        max: model.selectedMusic?.end ?? double.infinity,
+                        label: model.sliderProgress.toString(),
+                        value: model.sliderProgress,
+                        activeColor: Colors.blueGrey,
+                        inactiveColor: Colors.blue,
+                        onChanged: viewModel.onSliderChanged,
+                        onChangeStart: (value) {
+                          viewModel.onSliderChangeStart();
+                        },
+                        onChangeEnd: (value) async {
+                          await viewModel.onSliderChangeEnd(value);
+                        },
+                      ),
                     ),
-                  //再生戻る進むボタン
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //前の曲に戻る 色や機能変更必要
-                      ElevatedButton(
-                        onPressed: () {
-                          // 前の曲に関する処理をここに追加します。
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.grey,
-                          backgroundColor: Colors.white,
-                          elevation: 5,
-                          shape: const CircleBorder(),
-                        ),
-                        child: const Icon(Icons.skip_previous),
-                      ),
-                      //一時停止再生
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (model.playing) {
-                            await viewModel.pausePlayer();
-                          } else {
-                            await viewModel.startPlayer();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor:
-                              model.playing ? Colors.white : Colors.grey,
-                          backgroundColor:
-                              model.playing ? Colors.grey : Colors.white,
-                          elevation: model.playing ? 0 : 5,
-                          shape: const CircleBorder(),
-                        ),
-                        child: Icon(
-                          model.playing ? Icons.pause : Icons.play_arrow,
-                        ),
-                      ),
-                      //次の曲
-                      ElevatedButton(
-                        onPressed: () {
-                          // 次の曲に関する処理をここに追加します。
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.grey,
-                          backgroundColor: Colors.white,
-                          elevation: 5,
-                          shape: const CircleBorder(),
-                        ),
-                        child: const Icon(Icons.skip_next),
-                      ),
-                    ],
+                    Text(
+                      '${_formatTime(model.playerProgress)}/${_formatTime(model.selectedMusic?.end ?? 0)}',
+                    ),
+                  ],
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // 前の曲に関する処理をここに追加します。
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.grey,
+                      backgroundColor: Colors.white,
+                      elevation: 5,
+                      shape: const CircleBorder(),
+                    ),
+                    child: const Icon(Icons.skip_previous),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (model.playing) {
+                        await viewModel.pausePlayer();
+                      } else {
+                        await viewModel.resumePlayer();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor:
+                          model.playing ? Colors.white : Colors.grey,
+                      backgroundColor:
+                          model.playing ? Colors.grey : Colors.white,
+                      elevation: model.playing ? 0 : 5,
+                      shape: const CircleBorder(),
+                    ),
+                    child: Icon(
+                      model.playing ? Icons.pause : Icons.play_arrow,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // 次の曲に関する処理をここに追加します。
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.grey,
+                      backgroundColor: Colors.white,
+                      elevation: 5,
+                      shape: const CircleBorder(),
+                    ),
+                    child: const Icon(Icons.skip_next),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ],
       ),

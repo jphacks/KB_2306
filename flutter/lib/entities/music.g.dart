@@ -23,6 +23,7 @@ class MusicAdapter extends TypeAdapter<Music> {
       segments: (fields[5] as List).cast<TranscriptionSegment>(),
       createdAt: fields[6] as DateTime,
       updatedAt: fields[7] as DateTime,
+      audioUrl: fields[8] as String,
       artist: fields[3] as String?,
       album: fields[4] as String?,
     );
@@ -31,7 +32,7 @@ class MusicAdapter extends TypeAdapter<Music> {
   @override
   void write(BinaryWriter writer, Music obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class MusicAdapter extends TypeAdapter<Music> {
       ..writeByte(6)
       ..write(obj.createdAt)
       ..writeByte(7)
-      ..write(obj.updatedAt);
+      ..write(obj.updatedAt)
+      ..writeByte(8)
+      ..write(obj.audioUrl);
   }
 
   @override

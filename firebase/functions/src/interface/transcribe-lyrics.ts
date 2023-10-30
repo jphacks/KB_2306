@@ -11,9 +11,10 @@ export default functions({
     if (req.auth === undefined) {
       throw new HttpsError("unauthenticated", "unauthenticated");
     }
+    const userId = req.auth.uid;
 
     const { audio, fileName } = req.data;
-    const res = await transcribeLyrics(audio, fileName);
+    const res = await transcribeLyrics({ userId, audio, fileName });
 
     return res;
   },

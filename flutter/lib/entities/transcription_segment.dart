@@ -5,7 +5,7 @@ part 'transcription_segment.g.dart';
 @HiveType(typeId: 1)
 class TranscriptionSegment {
   const TranscriptionSegment({
-    required this.word,
+    required this.text,
     required this.start,
     required this.end,
     required this.words,
@@ -13,7 +13,7 @@ class TranscriptionSegment {
 
   factory TranscriptionSegment.fromMap(Map<String, dynamic> map) =>
       TranscriptionSegment(
-        word: map['word'] as String? ?? '',
+        text: map['text'] as String? ?? '',
         start: map['start'] as double,
         end: map['end'] as double,
         words: (map['words'] as List<dynamic>)
@@ -22,7 +22,7 @@ class TranscriptionSegment {
       );
 
   @HiveField(0)
-  final String word;
+  final String text;
   @HiveField(1)
   final double start;
   @HiveField(2)

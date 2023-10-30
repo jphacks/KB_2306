@@ -16,7 +16,7 @@ class MusicRepository {
   Stream<List<Music>> get musicsStream => _databaseHelper.watch(BoxName.musics);
 
   Future<void> updateTitle(String musicId, String title) async {
-    final music = await _databaseHelper.read<Music>(BoxName.musics, musicId);
+    final music = _databaseHelper.read<Music>(BoxName.musics, musicId);
     if (music == null) {
       throw Exception('Music does not exist.');
     }
@@ -26,4 +26,7 @@ class MusicRepository {
       music.copyWith(title: title),
     );
   }
+
+  Future<void> deleteMusic(String musicId) =>
+      _databaseHelper.delete(BoxName.musics, musicId);
 }

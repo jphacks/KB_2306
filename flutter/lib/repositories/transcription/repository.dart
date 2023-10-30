@@ -48,6 +48,7 @@ class TranscriptionRepository {
       throw Exception('Transcription failed.');
     }
     print(data);
+
     final transcriptionResult = TranscriptionResult.fromMap(data);
 
     final id = randomString(20);
@@ -55,7 +56,9 @@ class TranscriptionRepository {
       id: id,
       audio: bytes,
       title: file.name,
+      audioUrl: transcriptionResult.url,
       segments: transcriptionResult.segments,
+      fileName: file.name,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );

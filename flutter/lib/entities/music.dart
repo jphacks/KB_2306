@@ -20,8 +20,10 @@ class Music {
     required this.segments,
     required this.createdAt,
     required this.updatedAt,
+    required this.audioUrl,
     this.artist,
     this.album,
+    this.fileName,
   });
 
   @HiveField(0)
@@ -40,25 +42,28 @@ class Music {
   final DateTime createdAt;
   @HiveField(7)
   final DateTime updatedAt;
+  @HiveField(8)
+  final String audioUrl;
+  @HiveField(9)
+  final String? fileName;
 
   double get end => segments.isEmpty ? 0 : segments.last.end;
 
   String get formattedSegments {
     final buffer = StringBuffer()
       ..writeln('[ti:$title]')
-      ..writeln('[ar:Unknown Artist]')
-      ..writeln('[al:Unknown Album]')
+      ..writeln('[ar:${artist ?? ''}]')
+      ..writeln('[al:${album ?? ''}]')
       ..writeln('[by:]')
       ..writeln('[offset:0]')
       ..writeln('[00:00.00]$title');
 
     segments.forEach((segment) {
-      final startTime = _formatTime(segment.start);
       final endTime = _formatTime(segment.end);
-      buffer
-        ..writeln('[$startTime]')
-        ..writeln('[$endTime]${segment.word}');
+      buffer.writeln('[$endTime]${segment.text}');
     });
+
+    print(buffer);
 
     return buffer.toString();
   }
@@ -72,6 +77,8 @@ class Music {
     List<TranscriptionSegment>? segments,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? audioUrl,
+    String? fileName,
   }) =>
       Music(
         id: id ?? this.id,
@@ -82,5 +89,7 @@ class Music {
         segments: segments ?? this.segments,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        audioUrl: audioUrl ?? this.audioUrl,
+        fileName: fileName ?? this.fileName,
       );
 }

@@ -7,6 +7,7 @@ import 'package:flutter_firebase/color_schemes.g.dart';
 import 'package:flutter_firebase/entities/music.dart';
 import 'package:flutter_firebase/entities/transcription_segment.dart';
 import 'package:flutter_firebase/firebase_options.dart';
+import 'package:flutter_firebase/helpers/hive.dart';
 import 'package:flutter_firebase/pages/home/view.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -20,6 +21,7 @@ Future<void> main() async {
         ..registerAdapter(MusicAdapter())
         ..registerAdapter(TranscriptionSegmentAdapter())
         ..registerAdapter(TranscriptionWordAdapter());
+      await openBox<Music>(BoxName.musics);
 
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,

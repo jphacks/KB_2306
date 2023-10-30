@@ -17,7 +17,7 @@ class TranscriptionSegmentAdapter extends TypeAdapter<TranscriptionSegment> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TranscriptionSegment(
-      word: fields[0] as String,
+      text: fields[0] as String,
       start: fields[1] as double,
       end: fields[2] as double,
       words: (fields[3] as List).cast<TranscriptionWord>(),
@@ -29,7 +29,7 @@ class TranscriptionSegmentAdapter extends TypeAdapter<TranscriptionSegment> {
     writer
       ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.word)
+      ..write(obj.text)
       ..writeByte(1)
       ..write(obj.start)
       ..writeByte(2)
