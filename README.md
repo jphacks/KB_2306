@@ -8,6 +8,8 @@ https://lyrics-transcriber.web.app/
 
 注）歌詞の文字起こしを長時間行っていない場合、初回の処理に失敗することがあります。もう一度試してください。
 
+注）iOS で音が出ない現象を確認しています。PC での利用を推奨します。
+
 音声ファイルが手元にない場合はこちらを使ってください。
 [Good Love](https://firebasestorage.googleapis.com/v0/b/lyrics-transcriber.appspot.com/o/good-love.mp3?alt=media&token=1df5d8b3-bcc5-4c9f-b5b5-8a7f00c9fc2e)
 
