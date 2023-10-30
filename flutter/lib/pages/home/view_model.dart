@@ -43,7 +43,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
         final currentSegmentIndex = selectedMusic.segmentStarts
             .indexWhere((element) => element > sliderProgress);
         // indexWhere returns -1 if no element satisfies the condition
-        if (currentSegmentIndex != -1) {
+        if (currentSegmentIndex == -1) {
           return;
         }
         state = state.copyWith(
