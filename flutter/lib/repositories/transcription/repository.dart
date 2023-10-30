@@ -54,7 +54,7 @@ class TranscriptionRepository {
     final music = Music(
       id: id,
       audio: bytes,
-      title: file.name,
+      title: file.name.substring(0, file.name.lastIndexOf('.')),
       audioUrl: transcriptionResult.url,
       segments: transcriptionResult.segments,
       fileName: file.name,

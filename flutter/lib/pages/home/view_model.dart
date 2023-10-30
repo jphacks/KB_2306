@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lyricscribe/entities/music.dart';
 import 'package:lyricscribe/pages/home/model.dart';
 import 'package:lyricscribe/repositories/music/repository.dart';
@@ -28,21 +28,24 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       state = state.copyWith(musics: musics);
     });
 
-    _positionChangeSubscription =
-        audioPlayer.onPositionChanged.listen((duration) {
+    _positionChangeSubscription = audioPlayer.positionStream.listen((position) {
       final selectedMusic = state.selectedMusic;
       if (state.sliderDragging || selectedMusic == null) {
         return;
       }
 
       final sliderProgress =
-          duration.inSeconds + (duration.inMilliseconds.remainder(1000) / 1000);
+          position.inSeconds + (position.inMilliseconds.remainder(1000) / 1000);
 
       if (sliderProgress >
           selectedMusic.segmentEnds[state.currentSegmentIndex]) {
         // first segment that end is greater than sliderProgress
         final currentSegmentIndex = selectedMusic.segmentStarts
             .indexWhere((element) => element > sliderProgress);
+        // indexWhere returns -1 if no element satisfies the condition
+        if (currentSegmentIndex != -1) {
+          return;
+        }
         state = state.copyWith(
           sliderProgress: sliderProgress,
           currentSegmentIndex: currentSegmentIndex,
@@ -50,9 +53,9 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       }
     });
 
-    _playerStateSubscription = audioPlayer.onPlayerStateChanged.listen(
+    _playerStateSubscription = audioPlayer.playerStateStream.listen(
       (playerState) {
-        state = state.copyWith(playing: playerState == PlayerState.playing);
+        state = state.copyWith(playing: playerState.playing);
       },
     );
 
@@ -112,7 +115,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       playing: true,
     );
     await _startPlayer();
-    await audioPlayer.resume();
+    await audioPlayer.play();
   }
 
   Future<void> _startPlayer() async {
@@ -121,7 +124,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       return;
     }
     state = state.copyWith(playing: true);
-    await audioPlayer.play(UrlSource(music.audioUrl));
+    await audioPlayer.setUrl(music.audioUrl);
   }
 
   Future<void> pausePlayer() async {
@@ -131,7 +134,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
 
   Future<void> resumePlayer() async {
     state = state.copyWith(playing: true);
-    await audioPlayer.resume();
+    await audioPlayer.play();
   }
 
   void onSliderChangeStart() {
@@ -149,7 +152,7 @@ class HomeViewModel extends ViewModelStateNotifier<HomeModel> {
       sliderDragging: false,
       sliderProgress: value,
     );
-    await audioPlayer.seek(Duration(milliseconds: value.toInt() * 1000));
+    await audioPlayer.seek(Duration(seconds: value.toInt()));
   }
 
   void onSliderChanged(double value) {

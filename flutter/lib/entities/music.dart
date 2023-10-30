@@ -42,7 +42,7 @@ class Music {
   final String? fileName;
 
   // 1 second padding
-  double get end => segments.isEmpty ? 0 : segments.last.end + 3;
+  double get end => segments.isEmpty ? 0 : segments.last.end + 8;
 
   List<double> get segmentStarts => segments.map((e) => e.start).toList();
 

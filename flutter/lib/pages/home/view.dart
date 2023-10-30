@@ -14,16 +14,13 @@ class Home extends HookConsumerWidget {
     final selectedMusic = model.selectedMusic;
     final viewModel = ref.watch(homeViewModelProvider.notifier);
 
-    final lyricsUI = UINetease(highlight: false);
-
-    final mainTextSize = (MediaQuery.of(context).size.width ~/ 100) * 2.5;
-    lyricsUI.defaultSize = mainTextSize;
+    final lyricsUI = UINetease(highlight: false)..defaultSize = 28;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           selectedMusic?.title ?? 'Please select a music',
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white, fontSize: 16),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
@@ -126,10 +123,6 @@ class Home extends HookConsumerWidget {
                     position: model.sliderProgress.ceil() * 1000,
                     lyricUi: lyricsUI,
                     playing: false,
-                    size: Size(
-                      double.infinity,
-                      MediaQuery.of(context).size.height * 0.75,
-                    ),
                     emptyBuilder: () => SizedBox(
                       height: MediaQuery.of(context).size.height * 0.75,
                       width: double.infinity,
@@ -149,10 +142,14 @@ class Home extends HookConsumerWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
+            padding: const EdgeInsets.only(
+              top: 5,
+              bottom: 10,
+              left: 30,
+              right: 30,
+            ),
             child: Column(
               children: [
-                Container(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
